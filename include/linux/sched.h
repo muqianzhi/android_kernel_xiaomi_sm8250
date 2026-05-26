@@ -1130,8 +1130,8 @@ struct task_struct {
 	struct nameidata		*nameidata;
 
 #ifdef CONFIG_SYSVIPC
-	struct sysv_sem			sysvsem;
-	struct sysv_shm			sysvshm;
+	//struct sysv_sem			sysvsem;
+	//struct sysv_shm			sysvshm;
 #endif
 #ifdef CONFIG_DETECT_HUNG_TASK
 	/* hung task detection */
@@ -1546,8 +1546,14 @@ struct task_struct {
 #else
 	ANDROID_KABI_RESERVE(7);
 #endif
+#ifdef CONFIG_SYSVIPC
+	ANDROID_KABI_USE(8, struct sysv_sem sysvsem);
+	_ANDROID_KABI_REPLACE(ANDROID_KABI_RESERVE(9); ANDROID_KABI_RESERVE(10), struct sysv_shm sysvshm);
+#else
 	ANDROID_KABI_RESERVE(8);
-
+	ANDROID_KABI_RESERVE(9);
+	ANDROID_KABI_RESERVE(10);
+#endif
 #ifdef CONFIG_PACKAGE_RUNTIME_INFO
 struct package_runtime_info pkg;
 #endif
